@@ -1,0 +1,96 @@
+%% content/zh.tex — 中文示例内容（示例数据，请替换为你自己的信息）
+%% 被 main-*.tex 在导言区 \input；正文由 \resumebody 提供。
+
+% ==================== 头部字段 ====================
+\renewcommand{\ResumeName}{李明}
+\renewcommand{\ResumeRole}{大模型应用 / AI 算法工程师（实习）}
+
+% PDF 关键词：默认给一组通用词。请按你的目标岗位修改，
+% 不要保留与你方向无关的词（投 Java/前端/数据分析时尤其注意）。
+\renewcommand{\ResumeKeywords}{简历, 计算机, 软件工程, 机器学习}
+
+% 联系方式：一行文本流（无嵌套表格），链接均显示可见文字。
+\renewcommand{\ResumeContacts}{%
+  (+86) 138-0000-0000 \sep \weblink{mailto:liming@example.com}{liming@example.com}%
+  \sep 北京 \sep \weblink{https://github.com/yourname}{github.com/yourname}%
+}
+
+% 央国企版可在此追加正式字段（默认留空，按需开启）：
+% \renewcommand{\ResumeExtraLine}{求职方向：算法研发\sep 政治面貌：中共党员\sep 现居：北京}
+
+% ==================== 正文 ====================
+\newcommand{\resumebody}{%
+\makeheader
+
+% -------- 教育背景 --------
+\cvsection{教育背景}{Education}{education}
+
+\cvedu
+{某某大学}
+{硕士，计算机科学与技术（人工智能方向）}
+{2026.09 -- 2029.06（预计）}
+\cvmeta{主修课程：机器学习、深度学习、最优化方法、数据挖掘、分布式系统}
+
+\vspace{2pt}
+\cvedu
+{某某大学}
+{学士，计算机科学与技术｜GPA 3.8/4.0（专业前 5\%）}
+{2022.09 -- 2026.06}
+\cvmeta{主修课程：数据结构、计算机网络、操作系统、计算机组成、离散数学、线性代数}
+
+% -------- 实习经历 --------
+\cvsection{实习经历}{Internship}{internship}
+
+\cvexperience
+{某教育科技公司 · AI 应用组}
+{大模型应用开发实习生}
+{北京}
+{2026.07 -- 至今}
+\begin{itemize}
+  \item 主导设计并多轮迭代万字级结构化评审提示词，将专家评分标准转化为大模型可执行的规则体系，显著降低模型评分的随意性与不一致性。
+  \item 设计机器可读的计分单元 Schema 与 20 余条自动化校验规则，评分档位错误检出率达 85\%，人工复核量压缩至 15\%。
+  \item 基于 GPT + Claude 搭建多智能体互审流水线，并行处理近百份、数百页 PDF/Word 材料的证据抽取与逐项评分。
+\end{itemize}
+
+% -------- 项目经历 --------
+\cvsection{项目经历}{Projects}{projects}
+
+\cvproject
+{Tribunal：多智能体 LLM 文档评审系统}
+{2026.07}
+{Python · GPT · Claude · 确定性校验 · 人在环路}
+{https://github.com/yourname/tribunal}{github.com/yourname/tribunal}
+\begin{itemize}
+  \item 打分者(GPT)与评审者(Claude)按评分细则多轮共识；确定性层负责全部计算、资格一票否决与传导封顶，模型只判断、代码只计算。
+  \item 一票否决与传导规则完全确定性执行；分歧无法收敛的情形升级人工，绝不编造分数。测试 44 项，CI + 类型检查全绿。
+\end{itemize}
+
+\cvproject
+{企业级 RAG 知识问答服务}
+{2026.03 -- 2026.05}
+{Python · FastAPI · LangGraph · ChromaDB · Docker}
+{}{}
+\begin{itemize}
+  \item 构建文档解析 → 向量检索 → 重排 → 生成的问答链路，支持多轮对话与引用溯源，端到端延迟从 3.2s 优化至 1.4s。
+  \item 引入检索命中率与答案可溯源率双指标监控，上线后人工客服转接率下降约 30\%。
+\end{itemize}
+
+% -------- 科研 / 竞赛 / 开源 --------
+\cvsection{科研 / 竞赛 / 开源}{Research and Open Source}{research}
+
+\begin{itemize}
+  \item \textbf{科研：}复现某 Transformer 变体并在公开数据集上做消融实验，相关工作整理为课程研究报告。
+  \item \textbf{开源：}发布本简历模板等 2 个开源仓库，累计 Star 若干；坚持文档与测试完备。
+  \item \textbf{竞赛：}全国大学生数学建模竞赛省级一等奖；校级程序设计竞赛金奖。
+\end{itemize}
+
+% -------- 专业技能 --------
+\cvsection{专业技能}{Skills}{skills}
+
+\skillrow{编程语言}{Python、C/C++、SQL、JavaScript/TypeScript}
+\skillrow{机器学习}{PyTorch、Transformer、大模型微调、Diffusion}
+\skillrow{方法 / 方向}{RAG、Agent、多智能体、Prompt 工程、评测}
+\skillrow{工程工具}{Linux、Git、Docker、FastAPI、LangGraph}
+\skillrow{数据库}{MySQL、PostgreSQL、ChromaDB、Redis}
+\skillrow{语言}{中文（母语）、英语（CET-6 / 可流畅读写英文技术文档）}
+}

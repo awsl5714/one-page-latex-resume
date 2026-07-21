@@ -1,0 +1,93 @@
+%% content/en.tex — English sample content (sample data; replace with your own)
+%% \input in the preamble of main-en.tex; the body is delivered via \resumebody.
+
+% ==================== Header fields ====================
+\renewcommand{\ResumeName}{Li Ming}
+\renewcommand{\ResumeRole}{LLM Application / AI Engineer (Intern)}
+
+% PDF keywords: a generic default — edit for your target role. Do not keep
+% terms unrelated to the job you are applying for.
+\renewcommand{\ResumeKeywords}{Resume, Computer Science, Software Engineering, Machine Learning}
+
+% Contacts: a single text line (no nested tables); links show visible text.
+\renewcommand{\ResumeContacts}{%
+  (+86) 138-0000-0000 \sep \weblink{mailto:liming@example.com}{liming@example.com}%
+  \sep Beijing \sep \weblink{https://github.com/yourname}{github.com/yourname}%
+}
+
+% ==================== Body ====================
+\newcommand{\resumebody}{%
+\makeheader
+
+% -------- Education --------
+\cvsection{Education}{Education}{education}
+
+\cvedu
+{Some University}
+{M.Sc. in Computer Science (Artificial Intelligence)}
+{2026.09 -- 2029.06 (Expected)}
+\cvmeta{Core courses: Machine Learning, Deep Learning, Optimization, Data Mining, Distributed Systems}
+
+\vspace{2pt}
+\cvedu
+{Some University}
+{B.Eng. in Computer Science \textbar{} GPA 3.8/4.0 (Top 5\%)}
+{2022.09 -- 2026.06}
+\cvmeta{Core courses: Data Structures, Networks, Operating Systems, Computer Architecture, Discrete Math, Linear Algebra}
+
+% -------- Internship --------
+\cvsection{Internship}{Internship}{internship}
+
+\cvexperience
+{An EdTech Company · AI Applications}
+{LLM Application Engineer, Intern}
+{Beijing}
+{2026.07 -- Present}
+\begin{itemize}
+  \item Led the design and multi-round iteration of a rule-bound scoring prompt that turns an expert rubric into a spec an LLM can execute, sharply reducing scoring variance.
+  \item Designed a machine-readable scoring schema and 20+ automated checks; grade-band errors were caught at 85\%, concentrating hard cases into the 15\% reaching a human.
+  \item Built a GPT + Claude multi-agent review pipeline processing ~100 submissions of hundreds of PDF/Word pages each.
+\end{itemize}
+
+% -------- Projects --------
+\cvsection{Projects}{Projects}{projects}
+
+\cvproject
+{Tribunal: Multi-agent LLM document assessment}
+{2026.07}
+{Python · GPT · Claude · Deterministic validation · HITL}
+{https://github.com/yourname/tribunal}{github.com/yourname/tribunal}
+\begin{itemize}
+  \item GPT scorer and Claude reviewer reach consensus over rounds; a deterministic layer does all arithmetic, qualification vetoes and caps — the model judges, the code computes.
+  \item Non-convergent cases escalate to a human instead of fabricating a number. 44 tests; CI and type-checks green.
+\end{itemize}
+
+\cvproject
+{Enterprise RAG Question-Answering Service}
+{2026.03 -- 2026.05}
+{Python · FastAPI · LangGraph · ChromaDB · Docker}
+{}{}
+\begin{itemize}
+  \item Built a parse → retrieve → rerank → generate pipeline with multi-turn dialogue and citation tracing; cut end-to-end latency from 3.2s to 1.4s.
+  \item Added retrieval-hit and answer-traceability metrics; human handoff rate dropped ~30\% after launch.
+\end{itemize}
+
+% -------- Research / Open Source --------
+\cvsection{Research \& Open Source}{Research and Open Source}{research}
+
+\begin{itemize}
+  \item \textbf{Research:} Reproduced a Transformer variant with ablations on public datasets; written up as a course research report.
+  \item \textbf{Open Source:} Published this resume template and one other repository; maintains full docs and tests.
+  \item \textbf{Competition:} Provincial First Prize, national mathematical modelling contest; campus programming gold medal.
+\end{itemize}
+
+% -------- Skills --------
+\cvsection{Skills}{Skills}{skills}
+
+\skillrow{Languages}{Python, C/C++, SQL, JavaScript/TypeScript}
+\skillrow{Machine Learning}{PyTorch, Transformer, LLM fine-tuning, Diffusion}
+\skillrow{Methods}{RAG, Agent, Multi-agent, Prompt engineering, Evaluation}
+\skillrow{Engineering}{Linux, Git, Docker, FastAPI, LangGraph}
+\skillrow{Databases}{MySQL, PostgreSQL, ChromaDB, Redis}
+\skillrow{Human Languages}{Chinese (native), English (fluent technical reading \& writing)}
+}

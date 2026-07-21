@@ -1,0 +1,190 @@
+%% resume.sty — shared one-page resume style
+%% One style, three scenarios, selected by package options:
+%%   \usepackage[blue]{resume}          % internet visual, no photo
+%%   \usepackage[navy,photo]{resume}    % SOE / state-owned, formal, with photo
+%%   \usepackage[ats,mono]{resume}      % plain-text ATS-safe (no tabular/photo/tags)
+%%
+%% Options:
+%%   ats    — plain single text flow: no tabularx, no photo, no colored tags
+%%   photo  — show a portrait column in the header (visual modes only)
+%%   blue   — accent #2563EB  (default; internet)
+%%   navy   — accent #1E3A5F  (SOE, prints well in B/W)
+%%   mono   — accent #1F2937  (near-black, maximal ATS/print safety)
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{resume}[2026/07/21 v2.0 One-page resume style]
+
+% ==================== Options ====================
+\newif\ifresumeats     \resumeatsfalse
+\newif\ifresumephoto   \resumephotofalse
+\def\resume@theme{blue}
+\DeclareOption{ats}{\resumeatstrue}
+\DeclareOption{photo}{\resumephototrue}
+\DeclareOption{blue}{\def\resume@theme{blue}}
+\DeclareOption{navy}{\def\resume@theme{navy}}
+\DeclareOption{mono}{\def\resume@theme{mono}}
+\DeclareOption*{\PackageWarning{resume}{Unknown option '\CurrentOption'}}
+\ProcessOptions\relax
+
+% ==================== Packages ====================
+\RequirePackage[UTF8,fontset=fandol,scheme=plain]{ctex}
+\RequirePackage{fontspec}
+\RequirePackage{xcolor}
+\RequirePackage{enumitem}
+\RequirePackage{titlesec}
+\RequirePackage{graphicx}
+\RequirePackage{hyperref}
+\RequirePackage{bookmark}
+\ifresumeats\else
+  \RequirePackage{tabularx}
+  \RequirePackage{array}
+  \RequirePackage{fontawesome5}
+\fi
+
+% ==================== Fonts (graceful fallback) ====================
+% Latin: Inter / IBM Plex Sans if present, else document default.
+\IfFontExistsTF{Inter}{\setmainfont{Inter}}{%
+  \IfFontExistsTF{IBM Plex Sans}{\setmainfont{IBM Plex Sans}}{}}
+% CJK: prefer high-quality sans, else ctex's bundled Fandol (always compiles).
+\IfFontExistsTF{Noto Sans CJK SC}{\setCJKmainfont{Noto Sans CJK SC}}{%
+  \IfFontExistsTF{Source Han Sans SC}{\setCJKmainfont{Source Han Sans SC}}{%
+    \IfFontExistsTF{PingFang SC}{\setCJKmainfont{PingFang SC}}{}}}
+
+% ==================== Margins & body size ====================
+% Relaxed from the original (0.90/0.56cm, 9.95pt) for print safety and headroom.
+\ifresumeats
+  \RequirePackage[left=1.6cm,right=1.6cm,top=1.2cm,bottom=1.2cm]{geometry}
+\else
+  \RequirePackage[left=1.15cm,right=1.15cm,top=0.85cm,bottom=0.85cm]{geometry}
+\fi
+
+% ==================== Colors ====================
+\def\resume@blue{blue}\def\resume@navy{navy}\def\resume@mono{mono}
+\ifx\resume@theme\resume@navy
+  \definecolor{accent}{HTML}{1E3A5F}
+\else\ifx\resume@theme\resume@mono
+  \definecolor{accent}{HTML}{1F2937}
+\else
+  \definecolor{accent}{HTML}{2563EB}
+\fi\fi
+\definecolor{body}{HTML}{1F2937}
+\definecolor{muted}{HTML}{6B7280}
+% In pure-ATS mode links are plain black — nothing color-dependent to read.
+\ifresumeats\colorlet{accent}{black}\colorlet{muted}{black!70}\fi
+
+% ==================== Global style ====================
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\renewcommand{\arraystretch}{1.06}
+\ifresumeats
+  \fontsize{10.5pt}{13.2pt}\selectfont
+\fi
+
+\setlist[itemize]{
+  leftmargin=1.2em, itemsep=1pt, topsep=1.5pt, parsep=0pt, partopsep=0pt,
+  label={\raisebox{0.2ex}{\scriptsize\textcolor{accent}{$\bullet$}}}
+}
+
+% ==================== Hyperlinks & PDF metadata ====================
+% Metadata is driven by variables set in the content file — never hard-coded.
+\newcommand{\ResumeName}{Your Name}
+\newcommand{\ResumeRole}{Target Role}
+\newcommand{\ResumeKeywords}{Resume}
+\AtBeginDocument{%
+  \hypersetup{
+    colorlinks=true, urlcolor=accent, linkcolor=accent, pdfborder={0 0 0},
+    pdftitle={\ResumeName\ Resume}, pdfauthor={\ResumeName},
+    pdfsubject={Resume}, pdfkeywords={\ResumeKeywords}
+  }%
+}
+
+% ==================== Sections ====================
+\ifresumeats
+  % Plain, parser-friendly heading: bold text + a full-width rule.
+  \titleformat{\section}{\large\bfseries}{}{0em}{}[{\vspace{-3pt}\titlerule[0.5pt]}]
+\else
+  \titleformat{\section}{\large\bfseries\color{accent}}{}{0em}
+    {\textcolor{accent}{\rule[-1pt]{3pt}{13pt}}\hspace{6pt}}
+    [{\vspace{-2pt}\color{accent!45}\titlerule[0.45pt]}]
+\fi
+\titlespacing*{\section}{0pt}{6pt}{3pt}
+
+% \cvsection{visible title}{PDF bookmark}{anchor}
+\newcommand{\cvsection}[3]{\phantomsection\pdfbookmark[1]{#2}{sec:#3}\section*{#1}}
+
+% ==================== Small helpers ====================
+\newcommand{\cvdate}[1]{\hfill{\small\color{muted}#1}}
+\newcommand{\cvmeta}[1]{{\small\color{muted}#1}}
+% inline field separator
+\newcommand{\sep}{\ifresumeats\ \textbar\ \else{\color{muted}\ \textbar\ }\fi}
+% a visible, printable link (never icon-only): shows text, carries the URL
+\newcommand{\weblink}[2]{\ifresumeats#2\else\href{#1}{#2}\fi}
+% bullet lead used before a project's tech stack line
+\newcommand{\leadmark}{\ifresumeats\else\textcolor{accent}{\rule[0.45ex]{2.4pt}{0.8ex}}\hspace{5pt}\fi}
+
+% ==================== Header ====================
+% Content sets: \ResumeName \ResumeRole \ResumeContacts  (+ optional \ResumeExtraLine)
+\newcommand{\ResumeContacts}{}
+\newcommand{\ResumeExtraLine}{}
+
+\newcommand{\cvphoto}{%
+  \IfFileExists{photo.jpg}{%
+    \fcolorbox{accent!45}{white}{\includegraphics[width=2.0cm,height=2.5cm,keepaspectratio]{photo.jpg}}%
+  }{%
+    \fcolorbox{accent!45}{white}{\parbox[c][2.5cm][c]{2.0cm}{\centering\small\color{muted}\ \\ 证件照\\ Photo}}%
+  }%
+}
+
+\newcommand{\headerbody}{%
+  {\fontsize{23pt}{25pt}\selectfont\bfseries\color{accent}\ResumeName}\\[5pt]
+  {\fontsize{12.5pt}{15pt}\selectfont\bfseries\ResumeRole}\\[5pt]
+  {\small\ResumeContacts}%
+  \ifx\ResumeExtraLine\empty\else\\[3pt]{\small\ResumeExtraLine}\fi
+}
+
+\newcommand{\makeheader}{%
+  \ifresumeats
+    % Pure text flow — safest possible extraction order.
+    {\LARGE\bfseries\ResumeName}\par\vspace{2pt}
+    {\large\ResumeRole}\par\vspace{2pt}
+    \ResumeContacts\par
+    \ifx\ResumeExtraLine\empty\else\ResumeExtraLine\par\fi
+    \vspace{2pt}\hrule\vspace{4pt}
+  \else
+    \ifresumephoto
+      \begin{tabularx}{\linewidth}{@{}X c@{}}
+        \begin{minipage}[c]{\linewidth}\headerbody\end{minipage}
+        & \cvphoto \\
+      \end{tabularx}
+    \else
+      \headerbody
+    \fi
+    \vspace{-3pt}
+  \fi
+}
+
+% ==================== Entry macros ====================
+% \cvedu{School}{Degree / Major}{Time}
+\newcommand{\cvedu}[3]{\textbf{#1}\cvdate{#3}\\[-1pt]\cvmeta{#2}\vspace{1pt}}
+
+% NEW — \cvexperience{Organisation}{Role}{Location}{Time}
+\newcommand{\cvexperience}[4]{%
+  \vspace{1.5pt}\textbf{#1}\quad{\small\color{muted}#2}\cvdate{#4}\\[-1pt]
+  \cvmeta{\leadmark #3}}
+
+% \cvproject{Name}{Time}{Tech stack}{URL or empty}{visible link label or empty}
+\newcommand{\cvproject}[5]{%
+  \vspace{1.5pt}\textbf{#1}%
+  \if\relax\detokenize{#4}\relax\else\ \small\weblink{#4}{#5}\fi
+  \cvdate{#2}\\[-1pt]\cvmeta{\leadmark #3}}
+
+% \cvresearch{Title}{Time}{Context}
+\newcommand{\cvresearch}[3]{%
+  \vspace{1.5pt}\textbf{#1}\cvdate{#2}\\[-1pt]\cvmeta{\leadmark #3}}
+
+% ==================== Skills (plain categorised text — ATS-safe everywhere) ====================
+% \skillrow{Category}{comma-separated plain text}
+\newcommand{\skillrow}[2]{%
+  \textbf{\ifresumeats\else\color{accent}\fi #1}\quad #2\par\vspace{1.5pt}}
+
+\endinput

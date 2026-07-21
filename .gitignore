@@ -1,11 +1,13 @@
+# LaTeX build artifacts
+build/
 *.aux
 *.log
 *.out
 *.toc
-*.bbl
-*.blg
 *.fls
 *.fdb_latexmk
 *.synctex.gz
 *.xdv
-*.pdf
+
+# personal
+photo.jpg
